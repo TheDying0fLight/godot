@@ -11372,10 +11372,7 @@ Error ShaderLanguage::compile(const String &p_code, const ShaderCompileInfo &p_i
 	}
 #endif // DEBUG_ENABLED
 
-	if (err != OK) {
-		return err;
-	}
-	return OK;
+	return err;
 }
 
 Error ShaderLanguage::complete(const String &p_code, const ShaderCompileInfo &p_info, List<ScriptLanguage::CodeCompletionOption> *r_options, String &r_call_hint) {
