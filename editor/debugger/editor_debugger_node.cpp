@@ -540,7 +540,7 @@ void EditorDebuggerNode::_debug_data(const String &p_msg, const Array &p_data, i
 		inspect_edited_object_wait = false;
 	} else if (p_msg == "error") {
 		DebuggerMarshalls::OutputError oe;
-		ERR_FAIL_COND_MSG(oe.deserialize(p_data) == false, "Failed to deserialize error message");
+		ERR_FAIL_COND_MSG(!oe.deserialize(p_data), "Failed to deserialize error message.");
 		const String source_file_extension = oe.source_file.get_extension();
 		if (oe.error_type == ERR_HANDLER_SHADER && ResourceLoader::exists(oe.source_file)) {
 			ScriptEditor *script_editor = ScriptEditor::get_singleton();
