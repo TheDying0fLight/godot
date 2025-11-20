@@ -30,6 +30,7 @@
 
 #include "editor_debugger_node.h"
 
+#include "core/debugger/debugger_marshalls.h"
 #include "core/object/undo_redo.h"
 #include "editor/debugger/editor_debugger_plugin.h"
 #include "editor/debugger/editor_debugger_tree.h"
@@ -537,6 +538,17 @@ void EditorDebuggerNode::_debug_data(const String &p_msg, const Array &p_data, i
 		remote_scene_tree_wait = false;
 	} else if (p_msg == "scene:inspect_objects") {
 		inspect_edited_object_wait = false;
+	} else if (p_msg == "error") {
+		DebuggerMarshalls::OutputError oe;
+		ERR_FAIL_COND_MSG(oe.deserialize(p_data) == false, "Failed to deserialize error message");
+		const String source_file_extension = oe.source_file.get_extension();
+		if (oe.error_type == ERR_HANDLER_SHADER && ResourceLoader::exists(oe.source_file)) {
+			ScriptEditor *script_editor = ScriptEditor::get_singleton();
+			InspectorDock *inspector_dock = InspectorDock::get_singleton();
+			const Ref<Resource> res = ResourceLoader::load(oe.source_file);
+			script_editor->edit(res, oe.source_line - 1, 0);
+			inspector_dock->edit_resource(res);
+		}
 	}
 }
 
