@@ -30,10 +30,12 @@
 
 #include "shader_compiler.h"
 
+#ifdef TOOLS_ENABLED
+#include "editor/docks/inspector_dock.h"
+#include "editor/script/script_editor_plugin.h"
+#endif
 #include "servers/rendering/rendering_server_globals.h"
 #include "servers/rendering/shader_types.h"
-#include "editor/script/script_editor_plugin.h"
-#include "editor/docks/inspector_dock.h"
 
 #define SL ShaderLanguage
 
@@ -1546,7 +1548,8 @@ Error ShaderCompiler::compile(RS::ShaderMode p_mode, const String &p_code, Ident
 			inspector_dock->edit_resource(res);
 		}
 
-		_err_print_error(nullptr, file.utf8().get_data(), line, parser.get_error_text().utf8().get_data(), false, ERR_HANDLER_SHADER);
+		const String err_msg = "Shader compilation failed: " + (String)parser.get_error_text().utf8().get_data();
+		_err_print_error(nullptr, file.utf8().get_data(), line, err_msg, false, ERR_HANDLER_SHADER);
 		return err;
 	}
 

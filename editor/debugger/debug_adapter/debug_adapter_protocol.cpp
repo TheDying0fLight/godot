@@ -32,13 +32,16 @@
 
 #include "core/config/project_settings.h"
 #include "core/debugger/debugger_marshalls.h"
+#include "core/error/error_macros.h"
 #include "core/io/json.h"
 #include "core/io/marshalls.h"
 #include "editor/debugger/debug_adapter/debug_adapter_parser.h"
 #include "editor/debugger/script_editor_debugger.h"
+#include "editor/docks/inspector_dock.h"
 #include "editor/editor_log.h"
 #include "editor/editor_node.h"
 #include "editor/run/editor_run_bar.h"
+#include "editor/script/script_editor_plugin.h"
 #include "editor/settings/editor_settings.h"
 
 DebugAdapterProtocol *DebugAdapterProtocol::singleton = nullptr;
@@ -1193,6 +1196,17 @@ void DebugAdapterProtocol::on_debug_data(const String &p_msg, const Array &p_dat
 		remote_evaluation.deserialize(p_data);
 
 		parse_evaluation(remote_evaluation);
+	} else if (p_msg == "error") {
+		DebuggerMarshalls::OutputError oe;
+		ERR_FAIL_COND_MSG(oe.deserialize(p_data) == false, "Failed to deserialize error message");
+		const String source_file_extension = oe.source_file.get_extension();
+		if (oe.error_type == ERR_HANDLER_SHADER && ResourceLoader::exists(oe.source_file)) {
+			ScriptEditor *script_editor = ScriptEditor::get_singleton();
+			InspectorDock *inspector_dock = InspectorDock::get_singleton();
+			const Ref<Resource> res = ResourceLoader::load(oe.source_file);
+			script_editor->edit(res, oe.source_line - 1, 0);
+			inspector_dock->edit_resource(res);
+		}
 	}
 
 	notify_custom_data(p_msg, p_data);
