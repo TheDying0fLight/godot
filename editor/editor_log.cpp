@@ -33,6 +33,7 @@
 #include "core/object/undo_redo.h"
 #include "core/os/keyboard.h"
 #include "core/version.h"
+#include "editor/debugger/editor_debugger_node.h"
 #include "editor/docks/inspector_dock.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
@@ -62,6 +63,10 @@ void EditorLog::_error_handler(void *p_self, const char *p_func, const char *p_f
 		MessageQueue::get_main_singleton()->push_callable(callable_mp(self, &EditorLog::add_message), err_str, message_type);
 	} else {
 		self->add_message(err_str, message_type);
+	}
+
+	if (p_type == ERR_HANDLER_SHADER) {
+		EditorDebuggerNode::get_singleton()->open_file_in_editor(p_file, p_line);
 	}
 }
 

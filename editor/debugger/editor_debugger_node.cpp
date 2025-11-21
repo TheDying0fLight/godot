@@ -541,15 +541,19 @@ void EditorDebuggerNode::_debug_data(const String &p_msg, const Array &p_data, i
 	} else if (p_msg == "error") {
 		DebuggerMarshalls::OutputError oe;
 		ERR_FAIL_COND_MSG(!oe.deserialize(p_data), "Failed to deserialize error message.");
-		const String source_file_extension = oe.source_file.get_extension();
-		if (oe.error_type == ERR_HANDLER_SHADER && ResourceLoader::exists(oe.source_file)) {
-			ScriptEditor *script_editor = ScriptEditor::get_singleton();
-			InspectorDock *inspector_dock = InspectorDock::get_singleton();
-			const Ref<Resource> res = ResourceLoader::load(oe.source_file);
-			script_editor->edit(res, oe.source_line - 1, 0);
-			inspector_dock->edit_resource(res);
+		if (oe.error_type == ERR_HANDLER_SHADER) {
+			open_file_in_editor(oe.source_file, oe.source_line);
 		}
 	}
+}
+
+void EditorDebuggerNode::open_file_in_editor(const String p_file, const int p_line) {
+	if (!ResourceLoader::exists(p_file)) {
+		return;
+	}
+	const Ref<Resource> res = ResourceLoader::load(p_file);
+	ScriptEditor::get_singleton()->edit(res, p_line - 1, 0);
+	InspectorDock::get_singleton()->edit_resource(res);
 }
 
 void EditorDebuggerNode::set_script_debug_button(MenuButton *p_button) {

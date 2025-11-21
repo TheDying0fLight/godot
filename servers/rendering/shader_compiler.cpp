@@ -30,10 +30,6 @@
 
 #include "shader_compiler.h"
 
-#ifdef TOOLS_ENABLED
-#include "editor/docks/inspector_dock.h"
-#include "editor/script/script_editor_plugin.h"
-#endif
 #include "servers/rendering/rendering_server_globals.h"
 #include "servers/rendering/shader_types.h"
 
@@ -1540,18 +1536,7 @@ Error ShaderCompiler::compile(RS::ShaderMode p_mode, const String &p_code, Ident
 			line = parser.get_error_line();
 		}
 
-#ifdef TOOLS_ENABLED
-		ScriptEditor *script_editor = ScriptEditor::get_singleton();
-		InspectorDock *inspector_dock = InspectorDock::get_singleton();
-		if (ResourceLoader::exists(file) && script_editor != nullptr && inspector_dock != nullptr) {
-			const Ref<Resource> res = ResourceLoader::load(file);
-			script_editor->edit(res, line - 1, 0);
-			inspector_dock->edit_resource(res);
-		}
-#endif // TOOLS_ENABLED
-
-		const String err_msg = "Shader compilation failed: " + (String)parser.get_error_text().utf8().get_data();
-		_err_print_error(nullptr, file.utf8().get_data(), line, err_msg, false, ERR_HANDLER_SHADER);
+		_err_print_error(nullptr, file.utf8().get_data(), line, parser.get_error_text().utf8().get_data(), false, ERR_HANDLER_SHADER);
 		return err;
 	}
 
