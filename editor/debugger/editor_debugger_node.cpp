@@ -544,17 +544,20 @@ void EditorDebuggerNode::_debug_data(const String &p_msg, const Array &p_data, i
 		DebuggerMarshalls::OutputError oe;
 		ERR_FAIL_COND_MSG(!oe.deserialize(p_data), "Failed to deserialize error message.");
 		if (oe.error_type == ERR_HANDLER_SHADER) {
-			open_file_in_editor(oe.source_file, oe.source_line - 1);
+			open_file_in_editor(oe.source_file, oe.source_line);
 		}
 	}
 }
 
-Error EditorDebuggerNode::open_file_in_editor(const String p_file, const int p_line) {
+Error EditorDebuggerNode::open_file_in_editor(const String p_file, int p_line) {
 	if (!ResourceLoader::exists(p_file)) {
 		return ERR_DOES_NOT_EXIST;
 	}
 	const Ref<Resource> res = ResourceLoader::load(p_file);
 	InspectorDock::get_singleton()->edit_resource(res);
+	if (p_line == -1) {
+		return OK;
+	}
 	if (p_file.get_extension() == "gd" || p_file.get_extension() == "cs") {
 		ScriptEditor::get_singleton()->edit(res, p_line - 1, 0);
 	} else {

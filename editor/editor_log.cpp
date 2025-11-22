@@ -34,7 +34,6 @@
 #include "core/os/keyboard.h"
 #include "core/version.h"
 #include "editor/debugger/editor_debugger_node.h"
-#include "editor/docks/inspector_dock.h"
 #include "editor/editor_node.h"
 #include "editor/editor_string_names.h"
 #include "editor/file_system/editor_paths.h"
@@ -66,7 +65,7 @@ void EditorLog::_error_handler(void *p_self, const char *p_func, const char *p_f
 	}
 
 	if (p_type == ERR_HANDLER_SHADER) {
-		EditorDebuggerNode::get_singleton()->open_file_in_editor(p_file, p_line);
+		EditorDebuggerNode::get_singleton()->open_file_in_editor(p_file);
 	}
 }
 
