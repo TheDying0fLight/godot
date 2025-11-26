@@ -30,6 +30,7 @@
 
 #include "debugger_marshalls.h"
 
+#include "core/error/error_macros.h"
 #include "core/io/marshalls.h"
 
 #define CHECK_SIZE(arr, expected, what) ERR_FAIL_COND_V_MSG((uint32_t)arr.size() < (uint32_t)(expected), false, String("Malformed ") + what + " message from script debugger, message too short. Expected size: " + itos(expected) + ", actual size: " + itos(arr.size()))
@@ -106,7 +107,6 @@ Array DebuggerMarshalls::OutputError::serialize() {
 		error,
 		error_descr,
 		error_type,
-		warning,
 		size * 3
 	};
 	const ScriptLanguage::StackInfo *r = callstack.ptr();
@@ -119,7 +119,7 @@ Array DebuggerMarshalls::OutputError::serialize() {
 }
 
 bool DebuggerMarshalls::OutputError::deserialize(const Array &p_arr) {
-	CHECK_SIZE(p_arr, 12, "OutputError");
+	CHECK_SIZE(p_arr, 11, "OutputError");
 	hr = p_arr[0];
 	min = p_arr[1];
 	sec = p_arr[2];
@@ -130,10 +130,10 @@ bool DebuggerMarshalls::OutputError::deserialize(const Array &p_arr) {
 	error = p_arr[7];
 	error_descr = p_arr[8];
 	error_type = p_arr[9];
-	warning = p_arr[10];
-	unsigned int stack_size = p_arr[11];
+	warning = error_type == ERR_HANDLER_WARNING;
+	unsigned int stack_size = p_arr[10];
 	CHECK_SIZE(p_arr, stack_size, "OutputError");
-	int idx = 12;
+	int idx = 11;
 	callstack.resize(stack_size / 3);
 	ScriptLanguage::StackInfo *w = callstack.ptrw();
 	for (unsigned int i = 0; i < stack_size / 3; i++) {
