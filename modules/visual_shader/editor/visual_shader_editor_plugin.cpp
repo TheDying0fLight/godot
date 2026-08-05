@@ -1950,7 +1950,7 @@ void VisualShaderEditor::_resources_removed() {
 		}
 	}
 	if (has_any_instance) {
-		EditorUndoRedoManager::get_singleton()->clear_history(); // Need to clear undo history, otherwise it may lead to hard-detected errors and crashes (since the script was removed).
+		_clear_history(); // Need to clear undo history, otherwise it may lead to hard-detected errors and crashes (since the script was removed).
 		ResourceSaver::save(visual_shader, visual_shader->get_path());
 	}
 	_update_options_menu();
@@ -7875,10 +7875,30 @@ VisualShaderEditor::VisualShaderEditor() {
 	add_child(panning_debounce_timer);
 }
 
+void VisualShaderEditor::_clear_history() {
+	// To prevent undo on deleted graphs.
+	EditorUndoRedoManager *undo_redo = EditorUndoRedoManager::get_singleton();
+	undo_redo->clear_history(undo_redo->get_history_id_for_object(this));
+	undo_redo->clear_history(undo_redo->get_history_id_for_object(edited_res.ptr()));
+	undo_redo->clear_history(undo_redo->get_history_id_for_object(graph_plugin.ptr()));
+
+	Ref<VisualShader> visual_shader = edited_res;
+	for (int i = 0; i < VisualShader::TYPE_MAX; i++) {
+		VisualShader::Type type = VisualShader::Type(i);
+		Vector<int> nodes = visual_shader->get_node_list(type);
+		for (int j = 0; j < nodes.size(); j++) {
+			Ref<VisualShaderNode> ref = visual_shader->get_node(type, nodes[j]);
+			if (ref.is_valid()) {
+				undo_redo->clear_history(undo_redo->get_history_id_for_object(ref.ptr()));
+			}
+		}
+	}
+}
+
 VisualShaderEditor::~VisualShaderEditor() {
 	save_editor_layout();
 	if (EditorNode::get_editor_data().get_edited_scene_count() > 0) { // Avoid crash on shutdown.
-		EditorUndoRedoManager::get_singleton()->clear_history(); // To prevent undo on deleted graphs.
+		_clear_history();
 	}
 }
 

@@ -654,6 +654,8 @@ class VisualShaderEditor : public ScriptEditorBase {
 	void _param_selected();
 	void _param_unselected();
 
+	void _clear_history();
+
 	static ScriptEditorBase *create_editor(const Ref<Resource> &p_resource);
 
 protected:
