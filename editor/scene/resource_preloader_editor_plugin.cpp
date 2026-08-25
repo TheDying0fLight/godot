@@ -370,10 +370,8 @@ void ResourcePreloaderEditor::drop_data_fw(const Point2 &p_point, const Variant 
 
 void ResourcePreloaderEditor::update_layout(EditorDock::DockLayout p_layout, int p_slot) {
 	if (p_layout == EditorDock::DOCK_LAYOUT_HORIZONTAL && p_slot != EditorDock::DOCK_SLOT_BOTTOM) {
-		mc->set_theme_type_variation("NoBorderHorizontal");
 		tree->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_BOTH);
 	} else {
-		mc->set_theme_type_variation("NoBorderHorizontalBottom");
 		tree->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_TOP);
 	}
 }
@@ -421,10 +419,6 @@ ResourcePreloaderEditor::ResourcePreloaderEditor() {
 	file = memnew(EditorFileDialog);
 	add_child(file);
 
-	mc = memnew(MarginContainer);
-	mc->set_v_size_flags(SIZE_EXPAND_FILL);
-	vbc->add_child(mc);
-
 	tree = memnew(Tree);
 	tree->connect("button_clicked", callable_mp(this, &ResourcePreloaderEditor::_cell_button_pressed));
 	tree->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
@@ -436,7 +430,7 @@ ResourcePreloaderEditor::ResourcePreloaderEditor() {
 	tree->set_column_clip_content(1, true);
 
 	SET_DRAG_FORWARDING_GCD(tree, ResourcePreloaderEditor);
-	mc->add_child(tree);
+	vbc->add_child(tree);
 	search->set_forward_control(tree);
 
 	dialog = memnew(AcceptDialog);

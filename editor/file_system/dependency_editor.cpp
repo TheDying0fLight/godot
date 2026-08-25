@@ -577,12 +577,8 @@ DependencyEditorOwners::DependencyEditorOwners() {
 	empty->hide();
 	vbox->add_child(empty);
 
-	owners_mc = memnew(MarginContainer);
-	owners_mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	owners_mc->set_theme_type_variation("NoBorderHorizontalWindow");
-	vbox->add_child(owners_mc);
-
 	owners = memnew(ItemList);
+	owners->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	owners->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	owners->set_select_mode(ItemList::SELECT_MULTI);
 	owners->set_scroll_hint_mode(ItemList::SCROLL_HINT_MODE_BOTH);
@@ -590,7 +586,7 @@ DependencyEditorOwners::DependencyEditorOwners() {
 	owners->connect("item_activated", callable_mp(this, &DependencyEditorOwners::_select_file));
 	owners->connect("empty_clicked", callable_mp(this, &DependencyEditorOwners::_empty_clicked));
 	owners->set_allow_rmb_select(true);
-	owners_mc->add_child(owners);
+	vbox->add_child(owners);
 
 	set_title(TTRC("Owners List"));
 }
@@ -874,16 +870,12 @@ DependencyRemoveDialog::DependencyRemoveDialog() {
 	files_to_delete_label->set_text(TTR("Files to be deleted:"));
 	vb->add_child(files_to_delete_label);
 
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_theme_type_variation("NoBorderHorizontalWindow");
-	mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	vb->add_child(mc);
-
 	files_to_delete_list = memnew(ItemList);
+	files_to_delete_list->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	files_to_delete_list->set_scroll_hint_mode(ItemList::SCROLL_HINT_MODE_BOTH);
 	files_to_delete_list->set_custom_minimum_size(Size2(0, 94) * EDSCALE);
 	files_to_delete_list->set_accessibility_name(TTRC("Files to be deleted:"));
-	mc->add_child(files_to_delete_list);
+	vb->add_child(files_to_delete_list);
 
 	vb_owners = memnew(VBoxContainer);
 	vb_owners->set_h_size_flags(Control::SIZE_EXPAND_FILL);
@@ -895,18 +887,14 @@ DependencyRemoveDialog::DependencyRemoveDialog() {
 	owners_label->set_text(TTR("Owners of files to be deleted:"));
 	vb_owners->add_child(owners_label);
 
-	mc = memnew(MarginContainer);
-	mc->set_theme_type_variation("NoBorderHorizontalWindow");
-	mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	vb_owners->add_child(mc);
-
 	owners = memnew(Tree);
+	owners->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	owners->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	owners->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_BOTH);
 	owners->set_hide_root(true);
 	owners->set_custom_minimum_size(Size2(0, 94) * EDSCALE);
 	owners->set_accessibility_name(TTRC("Owners"));
-	mc->add_child(owners);
+	vb_owners->add_child(owners);
 	owners->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 
 	List<PropertyInfo> property_list;

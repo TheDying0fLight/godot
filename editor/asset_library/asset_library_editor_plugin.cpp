@@ -1110,12 +1110,6 @@ void EditorAssetLibrary::_notification(int p_what) {
 			const bool no_downloads = downloads_hb->get_child_count() == 0;
 			if (no_downloads == downloads_scroll->is_visible()) {
 				downloads_scroll->set_visible(!no_downloads);
-
-				if (Engine::get_singleton()->is_project_manager_hint()) {
-					library_mc->set_theme_type_variation(no_downloads ? "NoBorderAssetLibProjectManager" : "NoBorderAssetLibProjectManagerHorizontal");
-				} else {
-					library_mc->set_theme_type_variation(no_downloads ? "NoBorderAssetLib" : "NoBorderAssetLibHorizontal");
-				}
 				library_scroll->set_scroll_hint_mode(no_downloads ? ScrollContainer::SCROLL_HINT_MODE_TOP_AND_LEFT : ScrollContainer::SCROLL_HINT_MODE_ALL);
 			}
 
@@ -2083,7 +2077,6 @@ void EditorAssetLibrary::_update_asset_items_columns() {
 void EditorAssetLibrary::_update_downloads_section() {
 	const bool has_downloads = downloads_hb->get_child_count() > 0;
 	downloads_scroll->set_visible(has_downloads);
-	library_mc->set_theme_type_variation(has_downloads ? "NoBorderHorizontal" : (Engine::get_singleton()->is_project_manager_hint() ? "NoBorderAssetLibProjectManager" : "NoBorderAssetLib"));
 	library_scroll->set_scroll_hint_mode(has_downloads ? ScrollContainer::SCROLL_HINT_MODE_ALL : ScrollContainer::SCROLL_HINT_MODE_TOP_AND_LEFT);
 }
 
@@ -2240,15 +2233,11 @@ EditorAssetLibrary::EditorAssetLibrary(bool p_templates_only) {
 
 	/////////
 
-	library_mc = memnew(MarginContainer);
-	library_mc->set_theme_type_variation(Engine::get_singleton()->is_project_manager_hint() ? "NoBorderAssetLibProjectManager" : "NoBorderAssetLib");
-	library_mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	library_main->add_child(library_mc);
-
 	library_scroll = memnew(ScrollContainer);
+	library_scroll->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	library_scroll->set_scroll_hint_mode(ScrollContainer::SCROLL_HINT_MODE_TOP_AND_LEFT);
 	library_scroll->set_horizontal_scroll_mode(ScrollContainer::SCROLL_MODE_DISABLED);
-	library_mc->add_child(library_scroll);
+	library_main->add_child(library_scroll);
 
 	Ref<StyleBoxEmpty> border2;
 	border2.instantiate();

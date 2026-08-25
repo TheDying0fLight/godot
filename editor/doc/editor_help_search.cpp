@@ -41,7 +41,6 @@
 #include "editor/settings/editor_settings.h"
 #include "editor/themes/editor_scale.h"
 #include "editor/themes/editor_theme_manager.h"
-#include "scene/gui/margin_container.h"
 #include "servers/display/display_server.h"
 
 bool EditorHelpSearch::_all_terms_in_name(const Vector<String> &p_terms, const String &p_name) const {
@@ -362,14 +361,10 @@ EditorHelpSearch::EditorHelpSearch() {
 	filter_combo->connect(SceneStringName(item_selected), callable_mp(this, &EditorHelpSearch::_filter_combo_item_selected));
 	hbox->add_child(filter_combo);
 
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_theme_type_variation("NoBorderHorizontalWindow");
-	mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	vbox->add_child(mc);
-
 	// Create the results tree.
 	results_tree = memnew(Tree);
 	search_box->set_forward_control(results_tree);
+	results_tree->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	results_tree->set_accessibility_name(TTRC("Search Results"));
 	results_tree->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	results_tree->set_columns(2);
@@ -385,7 +380,7 @@ EditorHelpSearch::EditorHelpSearch() {
 	results_tree->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_BOTH);
 	results_tree->connect("item_activated", callable_mp(this, &EditorHelpSearch::_confirmed));
 	results_tree->connect(SceneStringName(item_selected), callable_mp((BaseButton *)get_ok_button(), &BaseButton::set_disabled).bind(false));
-	mc->add_child(results_tree, true);
+	vbox->add_child(results_tree, true);
 }
 
 void EditorHelpSearch::TreeCache::clear() {

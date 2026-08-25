@@ -387,12 +387,6 @@ QuickOpenResultContainer::QuickOpenResultContainer() {
 		}
 
 		{
-			MarginContainer *mc = memnew(MarginContainer);
-			mc->set_theme_type_variation("NoBorderHorizontalWindow");
-			mc->set_h_size_flags(Control::SIZE_EXPAND_FILL);
-			mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-			panel_container->add_child(mc);
-
 			// Search results
 			scroll_container = memnew(ScrollContainer);
 			scroll_container->set_horizontal_scroll_mode(ScrollContainer::SCROLL_MODE_DISABLED);

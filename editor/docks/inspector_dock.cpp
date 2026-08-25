@@ -866,13 +866,9 @@ InspectorDock::InspectorDock(EditorData &p_editor_data) {
 	load_resource_dialog->set_current_dir("res://");
 	load_resource_dialog->connect("file_selected", callable_mp(this, &InspectorDock::_resource_file_selected));
 
-	MarginContainer *mc = memnew(MarginContainer);
-	main_vb->add_child(mc);
-	mc->set_theme_type_variation("NoBorderBottomPanel");
-	mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-
 	inspector = EditorInspector::create_default_inspector(search);
-	mc->add_child(inspector);
+	inspector->set_v_size_flags(Control::SIZE_EXPAND_FILL);
+	main_vb->add_child(inspector);
 	inspector->connect("resource_selected", callable_mp(this, &InspectorDock::_resource_selected));
 
 	FileSystemDock::get_singleton()->connect("files_moved", callable_mp(this, &InspectorDock::_files_moved));

@@ -104,7 +104,7 @@ class SceneTreeDock : public EditorDock {
 
 	int current_option = 0;
 
-	MarginContainer *main_mc = nullptr;
+	VBoxContainer *main_vbox = nullptr;
 
 	CreateDialog *create_dialog = nullptr;
 	RenameDialog *rename_dialog = nullptr;

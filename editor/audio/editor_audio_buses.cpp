@@ -1533,10 +1533,8 @@ void EditorAudioBuses::_file_dialog_callback(const String &p_string) {
 
 void EditorAudioBuses::update_layout(EditorDock::DockLayout p_layout, int p_slot) {
 	if (p_slot != EditorDock::DOCK_SLOT_BOTTOM) {
-		bus_mc->set_theme_type_variation("NoBorderBottomPanel");
 		bus_scroll->set_scroll_hint_mode(ScrollContainer::SCROLL_HINT_MODE_TOP_AND_LEFT);
 	} else {
-		bus_mc->set_theme_type_variation("NoBorderPanel");
 		bus_scroll->set_scroll_hint_mode(ScrollContainer::SCROLL_HINT_MODE_ALL);
 	}
 }
@@ -1580,15 +1578,11 @@ EditorAudioBuses::EditorAudioBuses() {
 	top_hb->add_child(menu);
 	menu->get_popup()->connect(SceneStringName(id_pressed), callable_mp(this, &EditorAudioBuses::_menu_option));
 
-	bus_mc = memnew(MarginContainer);
-	bus_mc->set_theme_type_variation("NoBorderPanel");
-	bus_mc->set_v_size_flags(SIZE_EXPAND_FILL);
-	main_vb->add_child(bus_mc);
-
 	bus_scroll = memnew(ScrollContainer);
+	bus_scroll->set_v_size_flags(SIZE_EXPAND_FILL);
 	bus_scroll->set_scroll_hint_mode(ScrollContainer::SCROLL_HINT_MODE_ALL);
 	bus_scroll->set_custom_minimum_size(Size2(0, 40 * EDSCALE));
-	bus_mc->add_child(bus_scroll);
+	main_vb->add_child(bus_scroll);
 
 	HBoxContainer *bus_parent_hb = memnew(HBoxContainer);
 	bus_parent_hb->set_v_size_flags(SIZE_EXPAND_FILL);

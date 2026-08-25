@@ -614,7 +614,7 @@ void ThemeModern::populate_standard_styles(const Ref<EditorTheme> &p_theme, Edit
 		{
 			// Use empty stylebox for trees to avoid drawing unnecessary borders in docks.
 			Ref<StyleBoxEmpty> style_tree_panel = p_config.base_empty_style->duplicate();
-			style_tree_panel->set_content_margin_individual(EDSCALE_RND(p_config.base_margin * 1.5), EDSCALE_RND(p_config.base_margin * 2.5), EDSCALE_RND(p_config.base_margin * 1.5), EDSCALE_RND(p_config.base_margin * 2.5));
+			style_tree_panel->set_content_margin_individual(0, EDSCALE_RND(p_config.base_margin), 0, 0);
 
 			Ref<StyleBoxFlat> style_button_pressed = p_config.flat_button_pressed->duplicate();
 			style_button_pressed->set_content_margin_individual(p_config.base_margin, 0, p_config.base_margin, 0);
@@ -760,7 +760,7 @@ void ThemeModern::populate_standard_styles(const Ref<EditorTheme> &p_theme, Edit
 		// ItemList.
 		{
 			Ref<StyleBoxFlat> style_itemlist_bg = p_config.base_style->duplicate();
-			style_itemlist_bg->set_content_margin_all(EDSCALE_RND(p_config.base_margin * 2));
+			style_itemlist_bg->set_content_margin_individual(0, EDSCALE_RND(p_config.base_margin), 0, 0);
 			Ref<StyleBoxFlat> style_itemlist_cursor = p_config.base_style->duplicate();
 			style_itemlist_cursor->set_bg_color(p_config.mono_color * Color(1, 1, 1, 0.04));
 
@@ -1161,7 +1161,6 @@ void ThemeModern::populate_standard_styles(const Ref<EditorTheme> &p_theme, Edit
 		p_theme->set_icon("decrement_pressed", "HScrollBar", empty_icon);
 
 		p_theme->set_constant("padding_top", "HScrollBar", EDSCALE_RND(p_config.base_margin));
-		p_theme->set_constant("padding_bottom", "HScrollBar", EDSCALE_RND(p_config.base_margin));
 
 		// VScrollBar.
 
@@ -1182,7 +1181,6 @@ void ThemeModern::populate_standard_styles(const Ref<EditorTheme> &p_theme, Edit
 		p_theme->set_icon("decrement_pressed", "VScrollBar", empty_icon);
 
 		p_theme->set_constant("padding_left", "VScrollBar", EDSCALE_RND(p_config.base_margin));
-		p_theme->set_constant("padding_right", "VScrollBar", EDSCALE_RND(p_config.base_margin));
 
 		// Slider
 		const int background_margin = MAX(2, p_config.base_margin / 2);
@@ -2053,71 +2051,11 @@ void ThemeModern::populate_editor_styles(const Ref<EditorTheme> &p_theme, Editor
 
 		// MarginContainers with negative margins, to negate borders. Used with scroll hints.
 		{
-			int panel_margin = p_theme->get_stylebox(SceneStringName(panel), SNAME("PanelContainer"))->get_content_margin(SIDE_LEFT);
-			int margin = -panel_margin;
-
-			p_theme->set_type_variation("NoBorderHorizontal", "MarginContainer");
-			p_theme->set_constant("margin_left", "NoBorderHorizontal", margin);
-			p_theme->set_constant("margin_right", "NoBorderHorizontal", margin);
-
-			p_theme->set_type_variation("NoBorderHorizontalBottom", "NoBorderHorizontal");
-			p_theme->set_constant("margin_bottom", "NoBorderHorizontalBottom", margin);
-
-			// Used in the asset library. Specifically, the ("bg", "AssetLib") stylebox.
-
-			margin = -p_config.base_margin * EDSCALE;
-
-			p_theme->set_type_variation("NoBorderAssetLib", "MarginContainer");
-			p_theme->set_constant("margin_left", "NoBorderAssetLib", margin);
-			p_theme->set_constant("margin_right", "NoBorderAssetLib", margin);
-			p_theme->set_constant("margin_bottom", "NoBorderAssetLib", margin);
-
-			p_theme->set_type_variation("NoBorderAssetLibHorizontal", "MarginContainer");
-			p_theme->set_constant("margin_left", "NoBorderAssetLibHorizontal", margin);
-			p_theme->set_constant("margin_right", "NoBorderAssetLibHorizontal", margin);
-
-			margin -= panel_margin;
-
-			// Same as above, but with the margins adapted for the project manager.
-
-			p_theme->set_type_variation("NoBorderAssetLibProjectManager", "MarginContainer");
-			p_theme->set_constant("margin_left", "NoBorderAssetLibProjectManager", margin);
-			p_theme->set_constant("margin_right", "NoBorderAssetLibProjectManager", margin);
-			p_theme->set_constant("margin_bottom", "NoBorderAssetLibProjectManager", margin);
-
-			p_theme->set_type_variation("NoBorderAssetLibProjectManagerHorizontal", "MarginContainer");
-			p_theme->set_constant("margin_left", "NoBorderAssetLibProjectManagerHorizontal", margin);
-			p_theme->set_constant("margin_right", "NoBorderAssetLibProjectManagerHorizontal", margin);
-
-			int bottom_panel_margin = p_theme->get_stylebox(SNAME("BottomPanel"), EditorStringName(EditorStyles))->get_content_margin(SIDE_LEFT);
-
-			p_theme->set_type_variation("NoBorderPanel", "MarginContainer");
-			p_theme->set_constant("margin_left", "NoBorderPanel", -bottom_panel_margin);
-			p_theme->set_constant("margin_right", "NoBorderPanel", -bottom_panel_margin);
-
-			p_theme->set_type_variation("NoBorderBottomPanel", "NoBorderPanel");
-			p_theme->set_constant("margin_bottom", "NoBorderBottomPanel", -bottom_panel_margin);
-
-			margin = -p_theme->get_stylebox(SceneStringName(panel), SNAME("AcceptDialog"))->get_content_margin(SIDE_LEFT);
+			int margin = -p_theme->get_stylebox(SceneStringName(panel), SNAME("AcceptDialog"))->get_content_margin(SIDE_LEFT);
 
 			p_theme->set_type_variation("NoBorderHorizontalWindow", "MarginContainer");
 			p_theme->set_constant("margin_left", "NoBorderHorizontalWindow", margin);
 			p_theme->set_constant("margin_right", "NoBorderHorizontalWindow", margin);
-
-			margin = 2 * -bottom_panel_margin;
-
-			// Same as above, including the bottom.
-			p_theme->set_type_variation("NoBorderBottomWideWindow", "NoBorderHorizontalWindow");
-			p_theme->set_constant("margin_bottom", "NoBorderBottomWideWindow", margin);
-
-			// Used in the animation track editor.
-			p_theme->set_type_variation("NoBorderAnimation", "MarginContainer");
-			p_theme->set_constant("margin_left", "NoBorderAnimation", margin);
-			p_theme->set_constant("margin_right", "NoBorderAnimation", margin);
-
-			// Used in the OpenXR action map editor.
-			p_theme->set_type_variation("NoBorderOpenXR", "NoBorderAnimation");
-			p_theme->set_constant("margin_bottom", "NoBorderOpenXR", -panel_margin);
 		}
 
 		// Buttons in material previews.
@@ -2249,7 +2187,6 @@ void ThemeModern::populate_editor_styles(const Ref<EditorTheme> &p_theme, Editor
 			p_theme->set_stylebox(SceneStringName(panel), "ScrollContainerSecondary", style_sidebar);
 			p_theme->set_stylebox(SceneStringName(panel), "TreeSecondary", style_sidebar);
 			p_theme->set_stylebox(SceneStringName(panel), "ItemListSecondary", style_sidebar);
-			p_theme->set_constant("scroll_bar_h_separation", "ItemListSecondary", style_sidebar->get_margin(SIDE_RIGHT));
 			// Use it for EditorDebuggerInspector in StackTrace to keep the default 3-column layout,
 			// as the debugger inspector is too small to be considered a main area.
 			p_theme->set_stylebox(SceneStringName(panel), "EditorDebuggerInspector", style_sidebar);
@@ -2301,7 +2238,7 @@ void ThemeModern::populate_editor_styles(const Ref<EditorTheme> &p_theme, Editor
 			p_theme->set_constant("button_margin", "TreeTable", 0);
 
 			Ref<StyleBoxEmpty> style_tree_panel = p_config.base_empty_style->duplicate();
-			style_tree_panel->set_content_margin_individual(EDSCALE_RND(p_config.base_margin * 2), EDSCALE_RND(p_config.base_margin * 0.75), EDSCALE_RND(p_config.base_margin * 2), EDSCALE_RND(p_config.base_margin * 0.75));
+			style_tree_panel->set_content_margin_individual(0, EDSCALE_RND(p_config.base_margin * 0.75), 0, 0);
 			p_theme->set_stylebox(SceneStringName(panel), "TreeTable", style_tree_panel);
 
 			const Ref<StyleBoxFlat> style_tree_title = p_theme->get_stylebox("title_button_normal", "Tree")->duplicate();

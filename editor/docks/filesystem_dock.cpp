@@ -509,14 +509,10 @@ void FileSystemDock::_update_display_mode(bool p_force) {
 			tree->set_theme_type_variation("");
 			if (horizontal) {
 				toolbar2_hbc->hide();
-
 				tree->set_scroll_hint_mode(touches_bottom ? Tree::SCROLL_HINT_MODE_TOP : Tree::SCROLL_HINT_MODE_BOTH);
-				tree_mc->set_theme_type_variation("NoBorderHorizontal");
 			} else {
 				toolbar2_hbc->show();
-
 				tree->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_TOP);
-				tree_mc->set_theme_type_variation("NoBorderBottomPanel");
 			}
 			button_file_list_display_mode->hide();
 
@@ -538,11 +534,9 @@ void FileSystemDock::_update_display_mode(bool p_force) {
 			tree->set_v_size_flags(SIZE_EXPAND_FILL);
 			tree->set_theme_type_variation("TreeSecondary");
 			tree->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_DISABLED);
-			tree_mc->set_theme_type_variation("");
 
 			files->set_theme_type_variation("ItemListSecondary");
 			files->set_scroll_hint_mode(ItemList::SCROLL_HINT_MODE_DISABLED);
-			files_mc->set_theme_type_variation("");
 
 			toolbar2_hbc->hide();
 			button_file_list_display_mode->show();
@@ -4607,11 +4601,6 @@ FileSystemDock::FileSystemDock() {
 	split_box_offset_h = 240 * EDSCALE;
 	main_vb->add_child(split_box);
 
-	tree_mc = memnew(MarginContainer);
-	split_box->add_child(tree_mc);
-	tree_mc->set_theme_type_variation("NoBorderHorizontalBottom");
-	tree_mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-
 	tree = memnew(FileSystemTree);
 	tree->set_accessibility_name(TTRC("Directories"));
 	tree->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
@@ -4623,7 +4612,7 @@ FileSystemDock::FileSystemDock() {
 	tree->set_select_mode(Tree::SELECT_MULTI);
 	tree->set_custom_minimum_size(Size2(40 * EDSCALE, 15 * EDSCALE));
 	tree->set_column_clip_content(0, true);
-	tree_mc->add_child(tree);
+	split_box->add_child(tree);
 
 	tree->connect("item_activated", callable_mp(this, &FileSystemDock::_tree_activate_file));
 	tree->connect("multi_selected", callable_mp(this, &FileSystemDock::_tree_multi_selected));
@@ -4652,11 +4641,6 @@ FileSystemDock::FileSystemDock() {
 
 	file_list_button_sort = _create_file_menu_button();
 	path_hb->add_child(file_list_button_sort);
-
-	files_mc = memnew(MarginContainer);
-	file_list_vb->add_child(files_mc);
-	files_mc->set_theme_type_variation("NoBorderHorizontalBottom");
-	files_mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 
 	bottom_toolbar_hbc = memnew(HBoxContainer);
 	bottom_toolbar_hbc->set_alignment(BoxContainer::ALIGNMENT_END);
@@ -4687,6 +4671,7 @@ FileSystemDock::FileSystemDock() {
 	bottom_toolbar_hbc->add_child(button_file_list_display_mode);
 
 	files = memnew(FileSystemList);
+	files->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	files->set_accessibility_name(TTRC("Files"));
 	files->set_select_mode(ItemList::SELECT_MULTI);
 	files->set_scroll_hint_mode(ItemList::SCROLL_HINT_MODE_TOP);
@@ -4698,7 +4683,7 @@ FileSystemDock::FileSystemDock() {
 	files->connect("item_edited", callable_mp(this, &FileSystemDock::_rename_operation_confirm));
 	files->set_custom_minimum_size(Size2(0, 15 * EDSCALE));
 	files->set_allow_rmb_select(true);
-	files_mc->add_child(files);
+	file_list_vb->add_child(files);
 
 	scanning_vb = memnew(VBoxContainer);
 	scanning_vb->hide();

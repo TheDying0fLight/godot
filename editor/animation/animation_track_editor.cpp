@@ -8112,14 +8112,10 @@ void AnimationTrackEditor::popup_read_only_dialog() {
 }
 
 AnimationTrackEditor::AnimationTrackEditor() {
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_theme_type_variation("NoBorderAnimation");
-	mc->set_v_size_flags(SIZE_EXPAND_FILL);
-	add_child(mc);
-
 	main_panel = memnew(PanelContainer);
+	main_panel->set_v_size_flags(SIZE_EXPAND_FILL);
 	main_panel->set_focus_mode(FOCUS_ALL); // Allow panel to have focus so that shortcuts work as expected.
-	mc->add_child(main_panel);
+	add_child(main_panel);
 	HBoxContainer *timeline_scroll = memnew(HBoxContainer);
 	main_panel->add_child(timeline_scroll);
 	timeline_scroll->set_v_size_flags(SIZE_EXPAND_FILL);
@@ -8223,7 +8219,7 @@ AnimationTrackEditor::AnimationTrackEditor() {
 	timeline_vbox->add_child(hscroll);
 	timeline->set_hscroll(hscroll);
 
-	mc = memnew(MarginContainer);
+	MarginContainer *mc = memnew(MarginContainer);
 	mc->set_h_size_flags(SIZE_EXPAND_FILL);
 	mc->set_theme_type_variation("AnimationTrackMargins");
 	scroll->add_child(mc);

@@ -190,7 +190,6 @@ class EditorAudioBuses : public EditorDock {
 
 	HBoxContainer *top_hb = nullptr;
 
-	MarginContainer *bus_mc = nullptr;
 	ScrollContainer *bus_scroll = nullptr;
 	HBoxContainer *bus_hb = nullptr;
 

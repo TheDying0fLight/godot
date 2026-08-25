@@ -39,7 +39,6 @@
 #include "scene/gui/grid_container.h"
 #include "scene/gui/label.h"
 #include "scene/gui/line_edit.h"
-#include "scene/gui/margin_container.h"
 #include "scene/gui/popup_menu.h"
 #include "scene/gui/separator.h"
 #include "scene/gui/spin_box.h"
@@ -382,12 +381,8 @@ RunInstancesDialog::RunInstancesDialog() {
 	enable_multiple_instances_checkbox->connect(SceneStringName(toggled), callable_mp(instance_count, &SpinBox::set_editable));
 	instance_count->set_editable(enable_multiple_instances_checkbox->is_pressed());
 
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_theme_type_variation("NoBorderHorizontalWindow");
-	mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	main_vb->add_child(mc);
-
 	instance_tree = memnew(Tree);
+	instance_tree->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	instance_tree->set_h_scroll_enabled(false);
 	instance_tree->set_theme_type_variation("TreeTable");
 	instance_tree->set_hide_folding(true);
@@ -409,7 +404,7 @@ RunInstancesDialog::RunInstancesDialog() {
 
 	instance_tree->connect("item_mouse_selected", callable_mp(this, &RunInstancesDialog::_instance_tree_rmb));
 	instance_tree->connect("empty_clicked", callable_mp(this, &RunInstancesDialog::_instance_tree_rmb));
-	mc->add_child(instance_tree);
+	main_vb->add_child(instance_tree);
 
 	_refresh_argument_count();
 	instance_tree->connect("item_edited", callable_mp(this, &RunInstancesDialog::_start_instance_timer));

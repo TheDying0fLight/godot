@@ -1141,12 +1141,10 @@ void GridMapEditor::_icon_size_changed(float p_value) {
 
 void GridMapEditor::update_layout(EditorDock::DockLayout p_layout, int p_slot) {
 	if (categories->is_visible()) {
-		item_palette_mc->set_theme_type_variation("");
 		mesh_library_palette->set_scroll_hint_mode(ItemList::SCROLL_HINT_MODE_DISABLED);
 		mesh_library_palette->set_theme_type_variation("ItemListSecondary");
 	} else {
 		bool is_bottom = p_slot == EditorDock::DOCK_SLOT_BOTTOM;
-		item_palette_mc->set_theme_type_variation(is_bottom ? "NoBorderHorizontal" : "NoBorderHorizontalBottom");
 		mesh_library_palette->set_scroll_hint_mode(is_bottom ? ItemList::SCROLL_HINT_MODE_BOTH : ItemList::SCROLL_HINT_MODE_TOP);
 		mesh_library_palette->set_theme_type_variation("");
 	}
@@ -2004,15 +2002,11 @@ GridMapEditor::GridMapEditor() {
 	categories->connect(SNAME("item_activated"), callable_mp(this, &GridMapEditor::_on_categories_item_activated));
 	categories->connect(SceneStringName(item_selected), callable_mp(this, &GridMapEditor::update_palette));
 
-	item_palette_mc = memnew(MarginContainer);
-	item_palette_mc->set_theme_type_variation("NoBorderHorizontal");
-	hsplit->add_child(item_palette_mc);
-
 	mesh_library_palette = memnew(ItemList);
 	mesh_library_palette->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	mesh_library_palette->set_scroll_hint_mode(ItemList::SCROLL_HINT_MODE_BOTH);
 	mesh_library_palette->set_custom_minimum_size(Size2(100 * EDSCALE, 0));
-	item_palette_mc->add_child(mesh_library_palette);
+	hsplit->add_child(mesh_library_palette);
 	search_box->set_forward_control(mesh_library_palette);
 	mesh_library_palette->connect(SceneStringName(gui_input), callable_mp(this, &GridMapEditor::_mesh_library_palette_input));
 	mesh_library_palette->connect(SceneStringName(item_selected), callable_mp(this, &GridMapEditor::_item_selected_cbk));

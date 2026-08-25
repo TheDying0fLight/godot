@@ -843,10 +843,8 @@ void FindInFilesResultsPanel::_remove_result(TreeItem *p_item) {
 
 void FindInFilesResultsPanel::update_layout(EditorDock::DockLayout p_layout, int p_slot) {
 	if (p_slot != EditorDock::DOCK_SLOT_BOTTOM) {
-		results_display->set_theme_type_variation("NoBorderHorizontal");
 		results_display->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_BOTH);
 	} else {
-		results_display->set_theme_type_variation("NoBorderHorizontalBottom");
 		results_display->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_TOP);
 	}
 }
@@ -1310,12 +1308,8 @@ FindInFilesResultsPanel::FindInFilesResultsPanel() {
 		vbc->add_child(hbc);
 	}
 
-	results_mc = memnew(MarginContainer);
-	results_mc->set_theme_type_variation("NoBorderHorizontal");
-	results_mc->set_v_size_flags(SIZE_EXPAND_FILL);
-	vbc->add_child(results_mc);
-
 	results_display = memnew(Tree);
+	results_display->set_v_size_flags(SIZE_EXPAND_FILL);
 	results_display->set_accessibility_name(TTRC("Find in Files"));
 	results_display->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	results_display->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_BOTH);
@@ -1329,7 +1323,7 @@ FindInFilesResultsPanel::FindInFilesResultsPanel() {
 	results_display->add_theme_constant_override("inner_item_margin_left", 0);
 	results_display->add_theme_constant_override("inner_item_margin_right", 0);
 	results_display->create_item(); // Root
-	results_mc->add_child(results_display);
+	vbc->add_child(results_display);
 }
 
 //-----------------------------------------------------------------------------

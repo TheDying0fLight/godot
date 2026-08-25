@@ -77,10 +77,8 @@ void OpenXRActionMapEditor::_notification(int p_what) {
 
 void OpenXRActionMapEditor::update_layout(EditorDock::DockLayout p_layout, int p_slot) {
 	if (p_slot != EditorDock::DOCK_SLOT_BOTTOM) {
-		actionsets_mc->set_theme_type_variation("NoBorderBottomWideWindow");
 		actionsets_scroll->set_scroll_hint_mode(ScrollContainer::SCROLL_HINT_MODE_TOP_AND_LEFT);
 	} else {
-		actionsets_mc->set_theme_type_variation("NoBorderOpenXR");
 		actionsets_scroll->set_scroll_hint_mode(ScrollContainer::SCROLL_HINT_MODE_ALL);
 	}
 }
@@ -513,17 +511,13 @@ OpenXRActionMapEditor::OpenXRActionMapEditor() {
 	tabs->connect("tab_button_pressed", callable_mp(this, &OpenXRActionMapEditor::_on_tab_button_pressed));
 	main_vb->add_child(tabs);
 
-	actionsets_mc = memnew(MarginContainer);
-	actionsets_mc->set_theme_type_variation("NoBorderOpenXR");
-	tabs->add_child(actionsets_mc);
-	actionsets_mc->set_name(TTRC("Action Sets"));
-
 	actionsets_scroll = memnew(ScrollContainer);
+	actionsets_scroll->set_name(TTRC("Action Sets"));
 	actionsets_scroll->set_h_size_flags(SIZE_EXPAND_FILL);
 	actionsets_scroll->set_v_size_flags(SIZE_EXPAND_FILL);
 	actionsets_scroll->set_horizontal_scroll_mode(ScrollContainer::SCROLL_MODE_DISABLED);
 	actionsets_scroll->set_scroll_hint_mode(ScrollContainer::SCROLL_HINT_MODE_ALL);
-	actionsets_mc->add_child(actionsets_scroll);
+	tabs->add_child(actionsets_scroll);
 
 	actionsets_vb = memnew(VBoxContainer);
 	actionsets_vb->set_h_size_flags(SIZE_EXPAND_FILL);

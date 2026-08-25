@@ -527,12 +527,8 @@ GroupSettingsEditor::GroupSettingsEditor() {
 	add_button->connect(SceneStringName(pressed), callable_mp(this, &GroupSettingsEditor::_add_group));
 	hbc->add_child(add_button);
 
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_theme_type_variation("NoBorderBottomWideWindow");
-	mc->set_v_size_flags(SIZE_EXPAND_FILL);
-	add_child(mc);
-
 	tree = memnew(Tree);
+	tree->set_v_size_flags(SIZE_EXPAND_FILL);
 	tree->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	tree->set_hide_root(true);
 	tree->set_select_mode(Tree::SELECT_SINGLE);
@@ -551,7 +547,7 @@ GroupSettingsEditor::GroupSettingsEditor() {
 	tree->connect("item_activated", callable_mp(this, &GroupSettingsEditor::_show_rename_dialog));
 	tree->connect("button_clicked", callable_mp(this, &GroupSettingsEditor::_item_button_pressed));
 
-	mc->add_child(tree, true);
+	add_child(tree, true);
 
 	message = memnew(AcceptDialog);
 	add_child(message);

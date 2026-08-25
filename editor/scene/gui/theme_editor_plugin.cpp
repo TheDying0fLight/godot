@@ -2315,16 +2315,12 @@ ThemeTypeDialog::ThemeTypeDialog() {
 	add_type_options_label->set_text(TTRC("Available Node-based types:"));
 	add_type_vb->add_child(add_type_options_label);
 
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	mc->set_theme_type_variation("NoBorderHorizontalWindow");
-	add_type_vb->add_child(mc);
-
 	add_type_options = memnew(ItemList);
+	add_type_options->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	add_type_filter->set_forward_control(add_type_options);
 	add_type_options->set_auto_translate_mode(AUTO_TRANSLATE_MODE_DISABLED);
 	add_type_options->set_scroll_hint_mode(ItemList::SCROLL_HINT_MODE_BOTH);
-	mc->add_child(add_type_options);
+	add_type_vb->add_child(add_type_options);
 	add_type_options->connect(SceneStringName(item_selected), callable_mp(this, &ThemeTypeDialog::_add_type_options_cbk));
 	add_type_options->connect("item_activated", callable_mp(this, &ThemeTypeDialog::_add_type_dialog_activated));
 

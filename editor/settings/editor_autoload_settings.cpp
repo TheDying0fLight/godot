@@ -909,12 +909,8 @@ EditorAutoloadSettings::EditorAutoloadSettings() {
 	hbc->add_child(create_scene_autoload);
 	create_scene_autoload->connect(SceneStringName(pressed), callable_mp(this, &EditorAutoloadSettings::_create_scene_autoload));
 
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_v_size_flags(SIZE_EXPAND_FILL);
-	mc->set_theme_type_variation("NoBorderBottomWideWindow");
-	add_child(mc);
-
 	tree = memnew(Tree);
+	tree->set_v_size_flags(SIZE_EXPAND_FILL);
 	tree->set_accessibility_name(TTRC("Autoloads"));
 	tree->set_hide_root(true);
 	tree->set_select_mode(Tree::SELECT_MULTI);
@@ -951,7 +947,7 @@ EditorAutoloadSettings::EditorAutoloadSettings() {
 	tree->connect("button_clicked", callable_mp(this, &EditorAutoloadSettings::_autoload_button_pressed));
 	tree->connect("item_activated", callable_mp(this, &EditorAutoloadSettings::_autoload_activated));
 
-	mc->add_child(tree, true);
+	add_child(tree, true);
 
 	name_dialog = memnew(ConfirmationDialog);
 	name_dialog->set_title(TTRC("Enter Autoload Name"));

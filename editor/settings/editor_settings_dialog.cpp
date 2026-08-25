@@ -1086,12 +1086,8 @@ EditorSettingsDialog::EditorSettingsDialog() {
 	shortcut_search_bar->connect(SceneStringName(value_changed), callable_mp(this, &EditorSettingsDialog::_update_shortcuts));
 	tab_shortcuts->add_child(shortcut_search_bar);
 
-	MarginContainer *mc = memnew(MarginContainer);
-	mc->set_v_size_flags(Control::SIZE_EXPAND_FILL);
-	mc->set_theme_type_variation("NoBorderBottomPanel");
-	tab_shortcuts->add_child(mc);
-
 	shortcuts = memnew(Tree);
+	shortcuts->set_v_size_flags(Control::SIZE_EXPAND_FILL);
 	shortcuts->set_accessibility_name(TTRC("Shortcuts"));
 	shortcuts->set_theme_type_variation("TreeTable");
 	shortcuts->set_columns(2);
@@ -1102,7 +1098,7 @@ EditorSettingsDialog::EditorSettingsDialog() {
 	shortcuts->set_scroll_hint_mode(Tree::SCROLL_HINT_MODE_TOP);
 	shortcuts->connect("button_clicked", callable_mp(this, &EditorSettingsDialog::_shortcut_button_pressed));
 	shortcuts->connect("item_activated", callable_mp(this, &EditorSettingsDialog::_shortcut_cell_double_clicked));
-	mc->add_child(shortcuts);
+	tab_shortcuts->add_child(shortcuts);
 
 	SET_DRAG_FORWARDING_GCD(shortcuts, EditorSettingsDialog);
 

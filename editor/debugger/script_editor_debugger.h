@@ -140,7 +140,6 @@ private:
 
 	HashMap<int, String> profiler_signature;
 
-	MarginContainer *vmem_mc = nullptr;
 	Tree *vmem_tree = nullptr;
 	Button *vmem_refresh = nullptr;
 	Button *vmem_export = nullptr;
