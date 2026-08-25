@@ -3863,11 +3863,11 @@ Rect2 Tree::_get_scrollbar_layout_rect() const {
 	const real_t height = control_size.y - background->get_margin(SIDE_TOP) - background->get_margin(SIDE_BOTTOM);
 	const Rect2 content_rect = Rect2(background->get_offset(), Size2(width, height));
 
-	// Use the stylebox's margins by default. Can be overridden by `scrollbar_margin_*`.
-	const real_t top = theme_cache.scrollbar_margin_top < 0 ? content_rect.get_position().y : theme_cache.scrollbar_margin_top;
-	const real_t right = theme_cache.scrollbar_margin_right < 0 ? content_rect.get_end().x : (control_size.x - theme_cache.scrollbar_margin_right);
-	const real_t bottom = theme_cache.scrollbar_margin_bottom < 0 ? content_rect.get_end().y : (control_size.y - theme_cache.scrollbar_margin_bottom);
-	const real_t left = theme_cache.scrollbar_margin_left < 0 ? content_rect.get_position().x : theme_cache.scrollbar_margin_left;
+	// Combine stylebox margins with `scrollbar_margin_*`.
+	const real_t top = content_rect.get_position().y + theme_cache.scrollbar_margin_top;
+	const real_t right = content_rect.get_end().x - theme_cache.scrollbar_margin_right;
+	const real_t bottom = content_rect.get_end().y - theme_cache.scrollbar_margin_bottom;
+	const real_t left = content_rect.get_position().x + theme_cache.scrollbar_margin_left;
 
 	return Rect2(left, top, right - left, bottom - top);
 }
